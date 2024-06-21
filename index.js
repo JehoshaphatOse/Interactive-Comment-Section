@@ -105,7 +105,7 @@ const showInitComment = () => {
       });
     });
 
-    // replyInput.value = "@" + comment.user.username;
+    replyInput.value = "@" + comment.user.username;
     sendReplyBtns.forEach((sendReplyBtn) => {
       sendReplyBtn.addEventListener("click", addReply);
       function addReply() {

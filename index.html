@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/output.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/images/favicon-32x32.png"
+    />
+    <title>Interactive Comment Section</title>
+  </head>
+  <body>
+    <div class="bg-[#f5f6fa] relative">
+      <div class="container max-w-[650px] mx-auto p-4">
+        <!-- comment template -->
+        <template id="comment-template">
+          <div
+            class="flex gap-6 md:flex-row flex-col-reverse bg-white rounded-md p-6 comment"
+          >
+            <div class="flex items-center justify-between">
+              <div
+                class="bg-[#e7eaed] flex md:flex-col md:h-[100px] h-0 md:w-0 w-[150px] flex-row items-center justify-between gap-4 p-4 rounded-sm"
+              >
+                <button class="minus">
+                  <svg
+                    width="13"
+                    height="4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <defs>
+                      <path
+                        d="M11.357 3.332A.641.641 0 0 0 12 2.69V.643A.641.641 0 0 0 11.357 0H.643A.641.641 0 0 0 0 .643v2.046c0 .357.287.643.643.643h10.714Z"
+                        id="a"
+                      />
+                    </defs>
+                    <use fill="#5457B6" fill-rule="nonzero" xlink:href="#a" />
+                  </svg>
+                </button>
+                <span class="score text-base font-medium text-[#5457B6]"
+                  >0</span
+                >
+                <button class="plus">
+                  <svg
+                    width="12"
+                    height="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <defs>
+                      <path
+                        d="M12 7.023V4.977a.641.641 0 0 0-.643-.643h-3.69V.643A.641.641 0 0 0 7.022 0H4.977a.641.641 0 0 0-.643.643v3.69H.643A.641.641 0 0 0 0 4.978v2.046c0 .356.287.643.643.643h3.69v3.691c0 .356.288.643.644.643h2.046a.641.641 0 0 0 .643-.643v-3.69h3.691A.641.641 0 0 0 12 7.022Z"
+                        id="b"
+                      />
+                    </defs>
+                    <use fill="#5457B6" fill-rule="nonzero" xlink:href="#b" />
+                  </svg>
+                </button>
+              </div>
+              <div class="md:hidden block">
+                <button class="reply-btn flex items-center gap-3">
+                  <svg
+                    width="14"
+                    height="13"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z"
+                      fill="#5357B6"
+                    />
+                  </svg>
+                  <p class="text-[#5457B6] font-bold">Reply</p>
+                </button>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 flex">
+                    <img
+                      class="rounded-full object-cover user-image"
+                      src=""
+                      alt=""
+                    />
+                  </div>
+                  <p class="username font-bold">amyroson</p>
+                  <p class="comment-date text-gray-500 text-sm">2 weeks ago</p>
+                </div>
+                <div class="hidden md:block">
+                  <button class="flex items-center gap-3">
+                    <svg
+                      width="14"
+                      height="13"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z"
+                        fill="#5357B6"
+                      />
+                    </svg>
+                    <p class="reply-btn text-[#5457B6] font-bold">Reply</p>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <p class="comment-body py-2 text-justify"></p>
+              </div>
+            </div>
+          </div>
+          <!-- reply input -->
+          <div
+            class="hide reply-input-container flex justify-between gap-4 bg-white rounded-md p-3"
+          >
+            <div class="w-8 h-8 flex">
+              <img
+                class="rounded-full object-cover"
+                src="./assets/images/avatars/image-juliusomo.png"
+                alt=""
+              />
+            </div>
+            <textarea
+              class="flex-1 p-4 border border-[#5457B6]] rounded-md reply-input focus:outline-none focus:border-[#5457B6]"
+              name=""
+              id=" "
+              placeholder="Add comment here..."
+            ></textarea>
+            <div>
+              <button
+                class="bg-[#5457B6] text-white p-1 px-4 rounded-md send-reply-btn"
+              >
+                REPLY
+              </button>
+            </div>
+          </div>
+          <!-- reply container -->
+          <div
+            class="reply-container ml-2 pl-4 md:ml-5 md:pl-8 border-l border-gray-300 flex flex-col gap-4"
+          ></div>
+        </template>
+        <div class="space-y-4 comment-container"></div>
+        <!-- reply template -->
+        <template id="reply-template">
+          <div
+            class="flex gap-6 md:flex-row flex-col-reverse bg-white rounded-md p-6 comment"
+          >
+            <div class="flex items-center justify-between">
+              <div
+                class="bg-[#e7eaed] flex md:flex-col md:h-[100px] h-0 md:w-0 w-[150px] flex-row items-center justify-between gap-4 p-4 rounded-sm"
+              >
+                <button class="minus">
+                  <svg
+                    width="13"
+                    height="4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <defs>
+                      <path
+                        d="M11.357 3.332A.641.641 0 0 0 12 2.69V.643A.641.641 0 0 0 11.357 0H.643A.641.641 0 0 0 0 .643v2.046c0 .357.287.643.643.643h10.714Z"
+                        id="a"
+                      />
+                    </defs>
+                    <use fill="#5457B6" fill-rule="nonzero" xlink:href="#a" />
+                  </svg>
+                </button>
+                <span class="score text-base font-medium text-[#5457B6]"
+                  >0</span
+                >
+                <button class="plus">
+                  <svg
+                    width="12"
+                    height="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <defs>
+                      <path
+                        d="M12 7.023V4.977a.641.641 0 0 0-.643-.643h-3.69V.643A.641.641 0 0 0 7.022 0H4.977a.641.641 0 0 0-.643.643v3.69H.643A.641.641 0 0 0 0 4.978v2.046c0 .356.287.643.643.643h3.69v3.691c0 .356.288.643.644.643h2.046a.641.641 0 0 0 .643-.643v-3.69h3.691A.641.641 0 0 0 12 7.022Z"
+                        id="b"
+                      />
+                    </defs>
+                    <use fill="#5457B6" fill-rule="nonzero" xlink:href="#b" />
+                  </svg>
+                </button>
+              </div>
+              <div class="md:hidden block">
+                <button class="reply-btn flex items-center gap-3">
+                  <svg
+                    width="14"
+                    height="13"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z"
+                      fill="#5357B6"
+                    />
+                  </svg>
+                  <p class="text-[#5457B6] font-bold">Reply</p>
+                </button>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 flex">
+                    <img
+                      class="rounded-full object-cover userImage"
+                      src="./assets/images/avatars/image-amyrobson.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="font-bold username"></p>
+                  <p class="text-gray-500 text-sm reply-date"></p>
+                </div>
+                <div class="hidden md:block">
+                  <button class="reply-btn flex items-center gap-3">
+                    <svg
+                      width="14"
+                      height="13"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z"
+                        fill="#5357B6"
+                      />
+                    </svg>
+                    <p class="text-[#5457B6] font-bold">Reply</p>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <p class="reply-body py-2 text-justify"></p>
+              </div>
+            </div>
+          </div>
+          <!-- reply input -->
+          <div
+            class="hide reply-input-container flex justify-between gap-4 bg-white rounded-md p-3"
+          >
+            <div class="w-8 h-8 flex">
+              <img
+                class="rounded-full object-cover"
+                src="./assets/images/avatars/image-juliusomo.png"
+                alt=""
+              />
+            </div>
+            <textarea
+              class="flex-1 p-4 border border-[#5457B6]] rounded-md reply-input focus:outline-none focus:border-[#5457B6]"
+              name=""
+              id=" "
+              placeholder="Add comment here..."
+            ></textarea>
+            <div>
+              <button
+                class="bg-[#5457B6] text-white p-1 px-4 rounded-md send-reply-btn"
+              >
+                REPLY
+              </button>
+            </div>
+          </div>
+          <div
+            class="reply-container ml-2 pl-4 md:ml-5 md:pl-8 border-l border-gray-300 flex flex-col gap-4"
+          ></div>
+        </template>
+
+        <template id="reply-template-2">
+          <div
+            class="flex gap-6 md:flex-row flex-col-reverse bg-white rounded-md p-6"
+          >
+            <div class="flex items-center justify-between">
+              <div
+                class="bg-[#e7eaed] flex md:flex-col md:h-[100px] h-0 md:w-0 w-[130px] flex-row items-center justify-between gap-4 p-4 rounded-sm"
+              >
+                <button class="minus">
+                  <svg
+                    width="13"
+                    height="4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <defs>
+                      <path
+                        d="M11.357 3.332A.641.641 0 0 0 12 2.69V.643A.641.641 0 0 0 11.357 0H.643A.641.641 0 0 0 0 .643v2.046c0 .357.287.643.643.643h10.714Z"
+                        id="a"
+                      />
+                    </defs>
+                    <use fill="#5457B6" fill-rule="nonzero" xlink:href="#a" />
+                  </svg>
+                </button>
+                <span class="score text-base font-medium text-[#5457B6]"
+                  >0</span
+                >
+                <button class="plus">
+                  <svg
+                    width="12"
+                    height="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <defs>
+                      <path
+                        d="M12 7.023V4.977a.641.641 0 0 0-.643-.643h-3.69V.643A.641.641 0 0 0 7.022 0H4.977a.641.641 0 0 0-.643.643v3.69H.643A.641.641 0 0 0 0 4.978v2.046c0 .356.287.643.643.643h3.69v3.691c0 .356.288.643.644.643h2.046a.641.641 0 0 0 .643-.643v-3.69h3.691A.641.641 0 0 0 12 7.022Z"
+                        id="b"
+                      />
+                    </defs>
+                    <use fill="#5457B6" fill-rule="nonzero" xlink:href="#b" />
+                  </svg>
+                </button>
+              </div>
+              <div class="block md:hidden">
+                <div class="flex items-center gap-3">
+                  <button class="flex items-center gap-3 delete-btn">
+                    <svg
+                      width="12"
+                      height="14"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z"
+                        fill="#ED6368"
+                      />
+                    </svg>
+                    <span class="font-bold text-red-600">Delete</span>
+                  </button>
+                  <button class="flex items-center gap-3 edit-btn">
+                    <svg
+                      width="14"
+                      height="14"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z"
+                        fill="#5357B6"
+                      />
+                    </svg>
+                    <span class="text-[#5457B6] font-bold">Edit</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 flex">
+                    <img
+                      class="rounded-full object-cover userImage"
+                      src="./assets/images/avatars/image-juliusomo.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="font-bold username">amyroson</p>
+                  <p class="px-1 text-white text-sm bg-[#5457B6] rounded-sm">
+                    you
+                  </p>
+                  <p class="text-gray-500 text-sm reply-date">2 weeks ago</p>
+                </div>
+                <div class="hidden md:block">
+                  <div class="flex items-center gap-3">
+                    <button class="flex items-center gap-3 delete-btn">
+                      <svg
+                        width="12"
+                        height="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z"
+                          fill="#ED6368"
+                        />
+                      </svg>
+                      <span class="font-bold text-red-600">Delete</span>
+                    </button>
+                    <button class="flex items-center gap-3">
+                      <svg
+                        width="14"
+                        height="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z"
+                          fill="#5357B6"
+                        />
+                      </svg>
+                      <span class="text-[#5457B6] font-bold edit-btn"
+                        >Edit</span
+                      >
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="reply-body py-2 text-justify"></p>
+                <!-- edit input container section -->
+                <div
+                  class="hide edit-input-container my-4 bg-white rounded-md space-y-4"
+                >
+                  <textarea
+                    class="w-full p-4 border border-[#5457B6] rounded-md reply-input focus:outline-none focus:border-[#5457B6]"
+                    name=""
+                    id=" "
+                    placeholder="Add comment here..."
+                  ></textarea>
+                  <div class="flex justify-end">
+                    <button
+                      class="bg-[#5457B6] text-white p-1 px-4 rounded-md update-btn"
+                    >
+                      UPDATE
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <!-- input filed -->
+        <div class="flex justify-between gap-4 bg-white rounded-md my-4 p-3">
+          <div class="w-8 h-8 flex">
+            <img
+              class="rounded-full object-cover"
+              src="./assets/images/avatars/image-juliusomo.png"
+              alt=""
+            />
+          </div>
+          <textarea
+            class="flex-1 p-4 border border-[#5457B6] rounded-md comment-text focus:outline-none focus:border-[#5457B6]"
+            name=""
+            id=""
+            placeholder="Add comment here..."
+          ></textarea>
+          <div>
+            <button
+              class="bg-[#5457B6] text-white p-1 px-4 rounded-md send-btn"
+            >
+              SEND
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- delete pop-up modal section -->
+      <div
+        class="modal-container hide bg-black/70 flex items-center justify-center fixed opacity-1 transition-all duration-300 top-0 bottom-0 left-0 right-0 z-50"
+      >
+        <div class="rounded-md bg-white w-[350px] p-6 space-y-4 mx-auto">
+          <h2 class="text-lg font-medium">Delete comment.</h2>
+
+          <p class="text-base text-gray-500 text-justify">
+            Are you sure you want to delete this comment? This will remove the
+            comment and can't be undone.
+          </p>
+          <div class="flex gap-3 items-center">
+            <button
+              class="gap-8 p-2 px-4 rounded-md font-bold text-white bg-[#464240] cancel-btn"
+            >
+              NO, CANCEL
+            </button>
+            <button
+              class="gap-8 p-2 px-4 rounded-md font-bold text-white bg-[#c94242] ok-btn"
+            >
+              YES, DELETE
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./index.js"></script>
+</html>

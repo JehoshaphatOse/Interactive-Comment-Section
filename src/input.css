@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hide {
+  display: none;
+}
+
+/* WebKit browsers */
+textarea::-webkit-scrollbar {
+  width: 5px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: #f3f3f3;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: #5457b6;
+  border-radius: 10px;
+}

@@ -2063,8 +2063,8 @@ video {
   padding: 0.25rem;
 }
 
-.p-16 {
-  padding: 4rem;
+.p-12 {
+  padding: 3rem;
 }
 
 .p-2 {
@@ -2081,14 +2081,6 @@ video {
 
 .p-6 {
   padding: 1.5rem;
-}
-
-.p-10 {
-  padding: 2.5rem;
-}
-
-.p-12 {
-  padding: 3rem;
 }
 
 .px-1 {
@@ -2757,6 +2749,10 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 @media (min-width: 768px) {
+  .md\:relative {
+    position: relative;
+  }
+
   .md\:ml-5 {
     margin-left: 1.25rem;
   }
@@ -2783,6 +2779,10 @@ textarea::-webkit-scrollbar-thumb {
 
   .md\:flex-col {
     flex-direction: column;
+  }
+
+  .md\:items-start {
+    align-items: flex-start;
   }
 
   .md\:pl-8 {

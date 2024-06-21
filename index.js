@@ -67,9 +67,7 @@ const mainContainer = document.querySelector(".container");
 let commentTemplate;
 let replyTemplate;
 const showInitComment = () => {
-  // console.log(data.comments);
   data.comments.forEach((comment) => {
-    console.log(comment);
     commentTemplate = document
       .getElementById("comment-template")
       .content.cloneNode(true);
@@ -254,7 +252,6 @@ function addComment() {
     };
 
     data.comments.push(nComment);
-    console.log(data.comments);
     renderNewComment(nComment, commentContainer);
   }
   commentText.value = "";

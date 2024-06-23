@@ -378,18 +378,6 @@ const renderNewComment = (reply, container) => {
   container.appendChild(commentDiv);
 };
 
-// const saveToLocalStorage = () => {
-//   localStorage.setItem("commentsData", JSON.stringify(data.comments));
-// };
-// const loadFromLocalStorage = () => {
-//   const storedComments = localStorage.getItem("commentsData");
-//   console.log(storedComments);
-//   if (storedComments) {
-//     data.comments = JSON.parse(storedComments);
-//   }
-// };
-
 document.addEventListener("DOMContentLoaded", () => {
-  // loadFromLocalStorage();
   showInitComment();
 });
